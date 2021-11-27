@@ -14,9 +14,9 @@ class IndexRequest extends Request
     public function rules()
     {
         return $rules = [
-            'id'    => 'list:numeric',
-            'email' => 'list:email',
-            'name'  => 'list:string',
+            'id'    => 'numeric',
+            'email' => 'email',
+            'name'  => 'string',
         ];
     }
 
