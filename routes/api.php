@@ -20,5 +20,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 Route::post('login', 'App\Http\Controllers\Auth\LoginController@index')->name('login');
-Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
-Route::apiResource('password-reset', 'PasswordResetController');
+Route::post('logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
+Route::post('logout-from-all', 'App\Http\Controllers\Auth\LoginController@logout_from_all')->name('logout-from-all');

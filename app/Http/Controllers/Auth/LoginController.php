@@ -9,6 +9,7 @@ use App\Repositories\Contracts\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -30,7 +31,7 @@ class LoginController extends Controller
     /**
      * Login using email and password
      *
-     * @param Request $request
+     * @param LoginRequest $request
      * @return Response
      */
     public function index(LoginRequest $request)
@@ -50,21 +51,44 @@ class LoginController extends Controller
     }
 
     /**
-     * Logout a user
+     * Logout a user from current device - sanctum guard.
      *
      * @param Request $request
-     * @return JsonResponse
+     * @return mixed
      */
     public function logout(Request $request)
     {
         try {
-            $user = \auth()->guard('api')->user();
-            if (!$user instanceof User) {
+            $user = \auth()->guard('sanctum')->user();
+            if (!empty($user) && !$user instanceof User) {
                 throw new AccessDeniedHttpException();
             }
-            $user->token()->revoke();
+            if ($user['email'] === $request['email']) {
+                auth('sanctum')->user()->currentAccessToken()->delete();
+                return response('Successfully logged out', 200);
+            }
+        }catch (\Exception $exception) {
+            return response(['message' => 'Already logged out'], 200);
+        }
+    }
 
-            return response('Successfully logged out', 200);
+    /**
+     * Logout a user from all devices - sanctum guard.
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function logout_from_all(Request $request)
+    {
+        try {
+            $user = \auth()->guard('sanctum')->user();
+            if (!empty($user) && !$user instanceof User) {
+                throw new AccessDeniedHttpException();
+            }
+            if ($user['email'] === $request['email']) {
+                auth('sanctum')->user()->tokens()->delete();
+                return response('Successfully logged out', 200);
+            }
         }catch (\Exception $exception) {
             return response(['message' => 'Already logged out'], 200);
         }

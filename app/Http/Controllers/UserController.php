@@ -9,7 +9,6 @@ use App\Http\Requests\User\UpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserResourceCollection;
 use App\Repositories\Contracts\UserRepository;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -25,6 +24,7 @@ class UserController extends Controller
      */
     public function __construct(UserRepository $userRepository)
     {
+        $this->middleware('auth');
         $this->userRepository = $userRepository;
     }
 
@@ -49,7 +49,7 @@ class UserController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $request['password'] = Hash::make($request['password']);
+        $request['password'] = bcrypt($request['password']);
         $user = $this->userRepository->save($request->all());
 
         return new UserResource($user);
