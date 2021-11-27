@@ -16,8 +16,8 @@ class UpdateRequest extends Request
     public function rules()
     {
         return $rules = [
-            'name'       => 'max:50',
-            'email'      => 'unique:users',
+            'name'  => 'max:50',
+            'email' => 'unique:users',
         ];
     }
 

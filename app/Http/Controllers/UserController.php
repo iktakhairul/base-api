@@ -9,7 +9,7 @@ use App\Http\Requests\User\UpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserResourceCollection;
 use App\Repositories\Contracts\UserRepository;
-use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -44,12 +44,12 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreRequest  $request
+     * @param StoreRequest $request
      * @return UserResource
      */
     public function store(StoreRequest $request)
     {
-//        $this->authorize('store', User::class);
+        $request['password'] = Hash::make($request['password']);
         $user = $this->userRepository->save($request->all());
 
         return new UserResource($user);
@@ -58,7 +58,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param User $user
+     * @param $id
      * @return null
      * @throws UserResource
      */
@@ -68,7 +68,6 @@ class UserController extends Controller
         if (!$user instanceof User) {
             return response()->json(['status' => 404, 'message' => 'Resource not found with the specific id.'], 404);
         }
-        $this->authorize('show', $user);
 
         return new UserResource($user);
     }
@@ -76,14 +75,12 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateRequest  $request
-     * @param  \App\Models\User  $user
+     * @param UpdateRequest $request
+     * @param User $user
      * @return UserResource
-     * @throws AuthorizationException
      */
     public function update(UpdateRequest $request, User $user)
     {
-        $this->authorize('update', $user);
         $user = $this->userRepository->update($user, $request->all());
 
         return new UserResource($user);
@@ -92,13 +89,11 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
-     * @return null;
-     * @throws AuthorizationException
+     * @param User $user
+     * @return null
      */
     public function destroy(User $user)
     {
-        $this->authorize('destroy', $user);
         $this->userRepository->delete($user);
 
         return response()->json(null, 204);

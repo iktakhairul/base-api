@@ -16,6 +16,7 @@ class StoreRequest extends Request
         return $rules = [
             'name'       => 'max:50',
             'email'      => 'email|required|unique:users',
+            'password'   => 'min:6|string'
         ];
     }
 }
