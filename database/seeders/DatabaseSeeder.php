@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use \Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,20 +16,92 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $seed = [[
-            'id' => 1,
-            'name' => 'System Admin',
-            'email' => 'admin@system.com',
-            'password' => bcrypt('admin'),
+                'id' => 1,
+                'firstName'      => 'System',
+                'lastName'       => 'Admin',
+                'fullName'       => 'System Admin',
+                'userName'       => 'system_admin',
+                'email'          => 'system@admin.com',
+                'password'       => bcrypt('789456123'),
+                'userDomain'     => 'system,admin,operator,accounts,user',
+                'userType'       => 'system',
+                'userWeight'     => 99.99,
+                'address'        => '32/B, Sukhrabnad, Dhanmondi',
+                'zipCode'        => 1209,
+                'phone'          => '01683201359',
+                'secondaryPhone' => '01683201360',
+                'city'           => 'Dhaka',
+                'state'          => 'Dhaka',
+                'country'        => 'Bangladesh',
+                'isActive'       => 1,
+                'created_at'     => now(),
+                'updated_at'     => now(),
             ],
 
             [
                 'id' => 2,
-                'name' => 'Developer Admin',
-                'email' => 'admin@developer.com',
-                'password' => bcrypt('admin'),
+                'firstName'      => 'General',
+                'lastName'       => 'Admin',
+                'fullName'       => 'General Admin',
+                'userName'       => 'general_admin',
+                'email'          => 'admin@admin.com',
+                'password'       => bcrypt('789456123'),
+                'userDomain'     => 'admin,operator,accounts,user',
+                'userType'       => 'admin',
+                'userWeight'     => 79.99,
+                'address'        => '32/B, Sukhrabnad, Dhanmondi',
+                'zipCode'        => 1209,
+                'phone'          => '01683201361',
+                'secondaryPhone' => '01683201362',
+                'city'           => 'Dhaka',
+                'state'          => 'Dhaka',
+                'country'        => 'Bangladesh',
+                'isActive'       => 1,
+                'created_at'     => now(),
+                'updated_at'     => now(),
             ],
         ];
 
         User::insert($seed);
+
+        $now = date('Y-m-d H:i:s');
+        DB::table('roles')->insert([
+            [   'type'         => 'system',
+                'descriptions' => 'role for app\'s system admin user',
+                'created_at'   => $now,
+                'updated_at'   => $now
+            ],
+            [   'type'         => 'admin',
+                'descriptions' => 'role for app\'s general admin user',
+                'created_at'   => $now,
+                'updated_at'   => $now
+            ],
+            [   'type'         => 'operator',
+                'descriptions' => 'role for app\'s operator user',
+                'created_at'   => $now,
+                'updated_at'   => $now
+            ],
+            [   'type'         => 'accounts',
+                'descriptions' => 'role for app\'s accounts user',
+                'created_at'   => $now,
+                'updated_at'   => $now
+            ],
+            [   'type'         => 'support',
+                'descriptions' => 'role for app\'s master support user',
+                'created_at'   => $now,
+                'updated_at'   => $now
+            ],
+            [   'type'         => 'developer',
+                'descriptions' => 'role for app\'s developer user',
+                'created_at'   => $now,
+                'updated_at'   => $now
+            ],
+            [   'type'         => 'user',
+                'descriptions' => 'role for brand basic user',
+
+                'created_at'   => $now,
+                'updated_at'   => $now
+            ]
+        ]);
     }
 }

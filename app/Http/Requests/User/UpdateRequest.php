@@ -3,8 +3,8 @@
 namespace App\Http\Requests\User;
 
 use App\Http\Requests\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 
 class UpdateRequest extends Request
 {
@@ -15,9 +15,30 @@ class UpdateRequest extends Request
      */
     public function rules()
     {
+        $user = $this->route('user');
+
         return $rules = [
-            'name'  => 'max:50',
-            'email' => 'unique:users',
+            'password'         => 'min:5|required_with:current_password',
+            'current_password' => 'required_with:password',
+
+            'firstName'      => 'required|regex:/^[a-zA-Z0-9.,\s]+$/|min:3|max:100',
+            'lastName'       => 'required|regex:/^[a-zA-Z0-9.,\s]+$/|min:3|max:50',
+            'fullName'       => 'required|regex:/^[a-zA-Z0-9.,\s]+$/|min:3|max:160',
+            'userName'       => 'required|string|min:3|max:100',
+            'email'          => 'required|email|unique:users,email,'. $user->id, // Correct unique email validation.
+            'userDomain'     => 'string|max:100',
+            'userType'       => 'required|in:'. User::USER_TYPE_SYSTEM_ADMIN_USER. ',' .User::USER_TYPE_GENERAL_ADMIN_USER. ',' .User::USER_TYPE_GENERAL_USER,
+            'userWeight'     => 'string|max:6',
+            'address'        => 'string|max:255',
+            'zipCode'        => 'string|max:4',
+            'phone'          => 'string|max:20|unique:users,phone,'. $user->id, // Correct unique phone validation.
+            'secondaryPhone' => 'string|max:20',
+            'city'           => 'string|max:100',
+            'state'          => 'string|max:100',
+            'country'        => 'string|max:100',
+            'isActive'       => 'numeric',
+            'profileImage'   => 'mimes:jpeg,png,bmp,jpg,gif,webp,svg|max:2048', // 2048 KB Max Size.
+            'createdBy'      => 'exists:users,id',
         ];
     }
 
@@ -40,10 +61,10 @@ class UpdateRequest extends Request
                 if (empty($user->password)) {
                     $this->request->add(['password' => $this->input('password')]);
                     $this->request->remove('current_password');
-                } else if (Hash::check($this->input('current_password'), $user->password)) {
+                }elseif (Hash::check($this->input('current_password'), $user->password)) {
                     $this->request->add(['password' => $this->input('password')]);
                     $this->request->remove('current_password');
-                } else {
+                }else {
                     $validator->errors()->add('current_password', 'Current password doesn\'t match.');
                 }
             }
