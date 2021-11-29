@@ -15,17 +15,17 @@ class UserRoleResource extends Resource
     public function toArray($request)
     {
         return [
-            'id'        => $this->id,
-            'userId'    => $this->userId,
+            'id'        => $this['id'],
+            'userId'    => $this['userId'],
             'user'      => $this->when($this->needToInclude($request, 'ur.user'), function () {
-                return new UserResource($this->user);
+                return new UserResource($this['user']);
             }),
-            'roleId'    => $this->roleId,
+            'roleId'    => $this['roleId'],
             'role'      => $this->when($this->needToInclude($request, 'ur.role'), function () {
-                return new RoleResource($this->role);
+                return new RoleResource($this['role']);
             }),
             'createdBy' => $this->when($this->needToInclude($request, 'ur.createdBy'), function () {
-                return new UserResource($this->createdByUser);
+                return new UserResource($this['createdByUser']);
             }),
         ];
     }

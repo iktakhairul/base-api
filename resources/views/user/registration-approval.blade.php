@@ -1,7 +1,7 @@
 @component('mail::message')
 Hi{{ $receiver->name ? ' '.$receiver->name : '' }},
 
-Congratulations! Your account has been approved. You can now login to your Dashboard 
+Congratulations! Your account has been approved. You can now login to your Dashboard
 of [{{ env('FRONTEND_APP_NAME') }}]({{ env('FRONTEND_LOGIN_URL') }}).
 
 @component('mail::panel')
@@ -19,7 +19,7 @@ Singin
 @endcomponent
 
 
-If you're having trouble clicking the signin button, copy and paste the URL below into your web browser. 
+If you're having trouble clicking the signing button, copy and paste the URL below into your web browser.
 
 {{ env('FRONTEND_LOGIN_URL') }}
 

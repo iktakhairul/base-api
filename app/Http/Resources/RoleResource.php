@@ -15,9 +15,9 @@ class RoleResource extends Resource
     public function toArray($request)
     {
         return [
-            'id'           => $this->id,
-            'type'         => $this->type,
-            'description' => $this->description
+            'id'           => $this['id'],
+            'type'         => $this['type'],
+            'description' => $this['description']
         ];
     }
 }

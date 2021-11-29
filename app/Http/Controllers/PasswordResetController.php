@@ -7,7 +7,6 @@ use App\Http\Requests\PasswordReset\PasswordResetRequest;
 use App\Http\Resources\PasswordResetResource;
 use App\Http\Resources\UserResource;
 use App\Mail\PasswordResetConfirmation;
-use App\Mail\ResetUserPassword;
 use App\Repositories\Contracts\PasswordResetRepository;
 use App\Repositories\Contracts\UserRepository;
 use Illuminate\Http\JsonResponse;
@@ -20,11 +19,11 @@ class PasswordResetController extends Controller
     /**
      * @var PasswordResetRepository
      */
-    private $repository;
+    private $passwordResetRepository;
 
-    public function __construct(PasswordResetRepository $repository)
+    public function __construct(PasswordResetRepository $passwordResetRepository)
     {
-        $this->repository = $repository;
+        $this->passwordResetRepository = $passwordResetRepository;
     }
 
     /**
@@ -35,20 +34,9 @@ class PasswordResetController extends Controller
      */
     public function generateResetToken(GenerateTokenRequest $request)
     {
-        $passwordReset = $this->repository->save($request->all());
-
+        $passwordReset = $this->passwordResetRepository->save($request->all());
         if ($passwordReset) {
-            // if user exists against email
-            $user  = null;
-            if ($passwordReset['email']) {
-                $user   = app(UserRepository::class)->findBy(['email' => $passwordReset['email']])->first();
-            } else if ($passwordReset['phone']) {
-                $user   = app(UserRepository::class)->findBy(['phone' => $passwordReset['phone']])->first();
-            }
-
-            if ($user) {
-                Mail::to($user->email)->send(new ResetUserPassword($passwordReset['token'], $user->name));
-            }
+            $this->passwordResetRepository->sendToken($passwordReset);
         }
 
         return new PasswordResetResource($passwordReset);

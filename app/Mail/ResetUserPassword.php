@@ -18,13 +18,13 @@ class ResetUserPassword extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param $passwordResetToken
+     * @param $passwordReset
      * @param $receiverName
      */
-    public function __construct($passwordResetToken, $receiverName = '')
+    public function __construct($passwordReset, $receiverName)
     {
-        $this->passwordResetToken   = $passwordResetToken;
-        $this->receiverName         = $receiverName;
+        $this->passwordResetToken = $passwordReset['token'];
+        $this->receiverName       = $receiverName;
     }
 
     /**
@@ -35,8 +35,7 @@ class ResetUserPassword extends Mailable
     public function build()
     {
         return $this->subject("Reset your password.")
-            // ->view('user.reset-password')
-            ->markdown('user.reset-password') // todo
-            ->text('user.reset-password-plain'); // todo
+            ->markdown('user.reset-password')
+            ->text('user.reset-password-plain');
     }
 }
