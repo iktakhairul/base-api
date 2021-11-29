@@ -109,5 +109,22 @@ class DatabaseSeeder extends Seeder
                 'updated_at'   => $now
             ]
         ]);
+
+        DB::table('users_roles')->insert([
+            [
+                'id'         => 1,
+                'userId'     => 1,
+                'roleId'     => 1,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            [
+                'id'         => 2,
+                'userId'     => 2,
+                'roleId'     => 2,
+                'created_at' => $now,
+                'updated_at' => $now
+            ]
+        ]);
     }
 }
