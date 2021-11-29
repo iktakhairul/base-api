@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests\UserRole;
+namespace App\Http\Requests\Role;
 
 use App\Http\Requests\Request;
 
-class IndexRequest extends Request
+class StoreRequest extends Request
 {
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -15,10 +14,8 @@ class IndexRequest extends Request
     public function rules()
     {
         return $rules = [
-            'id'        => 'list:numeric',
-            'userId'    => 'list:numeric',
-            'roleId'    => 'list:numeric'
+            'type'        => 'required|max:50|unique:roles,type',
+            'description' => 'max:250'
         ];
     }
-
 }

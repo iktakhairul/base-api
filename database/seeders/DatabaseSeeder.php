@@ -66,41 +66,64 @@ class DatabaseSeeder extends Seeder
 
         $now = date('Y-m-d H:i:s');
         DB::table('roles')->insert([
-            [   'type'         => 'system',
-                'descriptions' => 'role for app\'s system admin user',
+            [
+                'type'         => 'system',
+                'description' => 'role for app\'s system admin user',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],
-            [   'type'         => 'admin',
-                'descriptions' => 'role for app\'s general admin user',
+            [
+                'type'         => 'admin',
+                'description' => 'role for app\'s general admin user',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],
-            [   'type'         => 'operator',
-                'descriptions' => 'role for app\'s operator user',
+            [
+                'type'         => 'operator',
+                'description' => 'role for app\'s operator user',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],
-            [   'type'         => 'accounts',
-                'descriptions' => 'role for app\'s accounts user',
+            [
+                'type'         => 'accounts',
+                'description' => 'role for app\'s accounts user',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],
-            [   'type'         => 'support',
-                'descriptions' => 'role for app\'s master support user',
+            [
+                'type'         => 'support',
+                'description' => 'role for app\'s master support user',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],
-            [   'type'         => 'developer',
-                'descriptions' => 'role for app\'s developer user',
+            [
+                'type'         => 'developer',
+                'description' => 'role for app\'s developer user',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],
-            [   'type'         => 'user',
-                'descriptions' => 'role for brand basic user',
+            [
+                'type'         => 'user',
+                'description' => 'role for brand basic user',
+                'created_at'   => $now,
+                'updated_at'   => $now
+            ]
+        ]);
 
-                'created_at'   => $now,
-                'updated_at'   => $now
+        DB::table('users_roles')->insert([
+            [
+                'id'         => 1,
+                'userId'     => 1,
+                'roleId'     => 1,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            [
+                'id'         => 2,
+                'userId'     => 2,
+                'roleId'     => 2,
+                'created_at' => $now,
+                'updated_at' => $now
             ]
         ]);
     }

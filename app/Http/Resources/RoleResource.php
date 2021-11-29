@@ -17,7 +17,7 @@ class RoleResource extends Resource
         return [
             'id'           => $this->id,
             'type'         => $this->type,
-            'descriptions' => $this->description
+            'description' => $this->description
         ];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\UserRole;
+namespace App\Http\Requests\Role;
 
 use App\Http\Requests\Request;
 
@@ -17,7 +17,7 @@ class IndexRequest extends Request
         return $rules = [
             'id'        => 'list:numeric',
             'userId'    => 'list:numeric',
-            'roleId'    => 'list:numeric'
+            'createdBy' => 'list:numeric'
         ];
     }
 
