@@ -2,12 +2,14 @@
 
 namespace App\Repositories;
 
-use App\Models\User;
+use App\Events\PasswordResetConfirmationEvent;
 use App\Events\PasswordResetEvent;
+use App\Http\Resources\UserResource;
 use App\Repositories\Contracts\PasswordResetRepository;
 use App\Repositories\Contracts\UserRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+
 
 class EloquentPasswordResetRepository extends EloquentBaseRepository implements PasswordResetRepository
 {
@@ -43,7 +45,6 @@ class EloquentPasswordResetRepository extends EloquentBaseRepository implements 
         }elseif ($passwordReset['phone']) {
             $user = app(UserRepository::class)->findBy(['phone' => $passwordReset['phone']])->first();
         }
-
         if ($user) {
             event(new PasswordResetEvent($passwordReset, $user['fullName']));
         }else {
@@ -52,26 +53,51 @@ class EloquentPasswordResetRepository extends EloquentBaseRepository implements 
     }
 
     /**
-     * @inheritdoc
+     * Check valid token, check valid token, update password field for user. Delete password reset token after update password.
+     *
      */
-    public function resetPassword($passwordReset, array $data): \ArrayAccess
+    public function updatePasswordTry($request)
     {
         DB::beginTransaction();
+        /**
+         * Check valid token.
+         */
+        $passwordReset = app(PasswordResetRepository::class)->findBy(['token' => $request['token']])->last();
+        if (!$passwordReset) {
+            return response()->json(['status' => 404, 'message' => 'Token is invalid.'], 404);
+        }
 
-        $userRepository = app(UserRepository::class);
-        $emailOrPhone = $passwordReset['email'] ?? $passwordReset['phone'];
+        /**
+         * Get user by email or phone.
+         */
+        $user = null;
+        if ($passwordReset['email']) {
+            $user = app(UserRepository::class)->findBy(['email' => $passwordReset['email']])->first();
+        }elseif ($passwordReset['phone']) {
+            $user = app(UserRepository::class)->findBy(['phone' => $passwordReset['phone']])->first();
+        }
 
-        $user = $userRepository->findUserByEmailPhone($emailOrPhone);
+        /**
+         * Update password for user, Do not use repository to update password.
+         */
+        if ($user) {
+            $passwordResetUpdate = DB::table('users')->where('id', $user->id)->update(['password' => bcrypt($request['password'])]);
+            if ($passwordResetUpdate) {
+                event(new PasswordResetConfirmationEvent($user['email'], $user['fullName']));
+                $passwordResetUpdate = response()->json(['status' => 201, 'message' => 'Password has been successfully updated.', 'user' => new UserResource($user)], 201);
+            }else {
+                return response()->json(['status' => 404, 'message' => 'User password cann\'t update.'], 404);
+            }
+        }else {
+            return response()->json(['status' => 404, 'message' => 'Invalid user against token.'], 404);
+        }
 
-        $user = User::where('email', '=', $emailOrPhone)->orWhere('phone', '=', $emailOrPhone)->first();
-
-        $userRepository->update($user, ['password' => $data['password']]);
-
+        /**
+         * Delete token after update.
+         */
         $passwordReset->delete();
-
         DB::commit();
 
-        return $user;
+        return $passwordResetUpdate;
     }
-
 }

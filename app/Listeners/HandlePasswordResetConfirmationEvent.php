@@ -2,10 +2,10 @@
 
 namespace App\Listeners;
 
-use App\Mail\ResetUserPassword;
+use App\Mail\PasswordResetConfirmation;
 use Illuminate\Support\Facades\Mail;
 
-class HandlePasswordResetEvent
+class HandlePasswordResetConfirmationEvent
 {
     /**
      * Create the event listener.
@@ -25,10 +25,9 @@ class HandlePasswordResetEvent
      */
     public function handle(object $event)
     {
-        $this->passwordReset = $event->passwordReset;
-        $this->email         = $this->passwordReset->email;
+        $this->email         = $event->passwordResetEmail;
         $this->receiverName  = $event->receiverName;
 
-        Mail::to($this->email)->send(new ResetUserPassword($this->passwordReset, $this->receiverName));
+        Mail::to($this->email)->send(new PasswordResetConfirmation($this->email, $this->receiverName));
     }
 }

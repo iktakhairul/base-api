@@ -8,21 +8,23 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class PasswordResetConfirmation extends Mailable
+class PasswordResetConfirmation extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
 
-    public $receiver;
+    public $receiverEmail, $receiverName;
 
     /**
      * Create a new message instance.
      *
-     * @param User $receiver
+     * @param $receiverEmail
+     * @param $receiverName
      */
-    public function __construct(User $receiver)
+    public function __construct($receiverEmail, $receiverName)
     {
-        $this->receiver = $receiver;
+        $this->receiverEmail = $receiverEmail;
+        $this->receiverName  = $receiverName;
     }
 
     /**
