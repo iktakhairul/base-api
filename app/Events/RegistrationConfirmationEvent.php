@@ -8,21 +8,21 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PasswordResetEvent
+class RegistrationConfirmationEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $passwordReset, $receiverName;
+    public $registerEmail, $receiverName;
 
     /**
      * Create a new event instance.
      *
+     * @param $registerEmail
      * @param $receiverName
-     * @param $passwordReset
      */
-    public function __construct($passwordReset, $receiverName)
+    public function __construct($registerEmail, $receiverName)
     {
-        $this->passwordReset = $passwordReset;
+        $this->registerEmail = $registerEmail;
         $this->receiverName  = $receiverName;
     }
 

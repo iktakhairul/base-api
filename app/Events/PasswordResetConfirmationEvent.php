@@ -12,7 +12,7 @@ class PasswordResetConfirmationEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $passwordReset;
+    public $passwordResetEmail, $receiverName;
 
     /**
      * Create a new event instance.

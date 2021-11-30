@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class PasswordResetConfirmation extends Mailable implements ShouldQueue
+class RegistrationConfirmation extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -33,8 +33,8 @@ class PasswordResetConfirmation extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject("Password reset confirmation email.")
-            ->markdown('user.password-reset-confirmation')
-            ->text('user.password-reset-confirmation-plain');
+        return $this->subject("Registration confirmation email.")
+            ->markdown('user.registration-confirmation')
+            ->text('user.registration-confirmation-plain');
     }
 }
