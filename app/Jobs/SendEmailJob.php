@@ -2,9 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\ResetUserPassword;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -19,11 +17,9 @@ class SendEmailJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($event)
+    public function __construct()
     {
-        $this->passwordReset = $event->passwordReset;
-        $this->email         = $event->passwordReset->email;
-        $this->receiverName  = $event->receiverName;
+        //
     }
 
     /**
@@ -33,6 +29,6 @@ class SendEmailJob implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->email)->send(new ResetUserPassword($this->passwordReset, $this->receiverName));
+        //
     }
 }
