@@ -15,8 +15,8 @@ class PasswordResetResource extends Resource
     public function toArray($request)
     {
         return [
-            "email" => $this->email,
-            "phone" => $this->phone
+            "email" => $this['email'],
+            "phone" => $this['phone']
         ];
     }
 }

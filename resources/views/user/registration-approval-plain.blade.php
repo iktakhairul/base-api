@@ -1,21 +1,21 @@
-Hi{{ $receiver->name ? ' '.$receiver->name : '' }}, 
+Hi{{ $receiver->name ? ' '.$receiver->name : '' }},
 
-Congratulations! Your account has been approved. You can now login to your Dashboard 
-of {{ env('FRONTEND_LOGIN_URL') }}. 
+Congratulations! Your account has been approved. You can now login to your Dashboard
+of {{ env('FRONTEND_LOGIN_URL') }}.
 
-Account Details: 
+Account Details:
 
-<< Name: {{ $receiver->name }} >> 
+<< Name: {{ $receiver->name }} >>
 
-<< Email: {{ $receiver->email }} >> 
+<< Email: {{ $receiver->email }} >>
 
-<< Password : {{ $password }} >> 
+<< Password : {{ $password }} >>
 
-<< Sign-In Link: {{ env('FRONTEND_LOGIN_URL') }} >> 
+<< Sign-In Link: {{ env('FRONTEND_LOGIN_URL') }} >>
 
 
-If you're having trouble clicking the signin button, copy and paste the URL below into your web browser. 
+If you're having trouble clicking the signing button, copy and paste the URL below into your web browser.
 
-Thanks, 
+Thanks,
 {{ env('FRONTEND_APP_NAME') }} Support
 

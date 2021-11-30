@@ -17,11 +17,13 @@ class PasswordResetEvent
     /**
      * Create a new event instance.
      *
+     * @param $receiverName
      * @param $passwordReset
      */
-    public function __construct($passwordReset)
+    public function __construct($passwordReset, $receiverName)
     {
         $this->passwordReset = $passwordReset;
+        $this->receiverName  = $receiverName;
     }
 
     /**

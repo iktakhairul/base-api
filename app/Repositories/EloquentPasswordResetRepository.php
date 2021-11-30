@@ -1,10 +1,7 @@
 <?php
 
-
 namespace App\Repositories;
 
-
-use App\Models\PasswordReset;
 use App\Models\User;
 use App\Events\PasswordResetEvent;
 use App\Repositories\Contracts\PasswordResetRepository;
@@ -15,6 +12,8 @@ use Illuminate\Support\Str;
 class EloquentPasswordResetRepository extends EloquentBaseRepository implements PasswordResetRepository
 {
     /**
+     * Save resource to reset password table.
+     *
      * @inheritDoc
      */
     public function save(array $data) : \ArrayAccess
@@ -22,18 +21,34 @@ class EloquentPasswordResetRepository extends EloquentBaseRepository implements 
         if (isset($data['emailOrPhone']))  {
             if (strpos($data['emailOrPhone'], '@') !== false) {
                 $data['email'] = $data['emailOrPhone'];
-            } else {
+            }else {
                 $data['phone'] = $data['emailOrPhone'];
             }
             unset($data['emailOrPhone']);
         }
-
         $data['token'] = time() . '-' . Str::Random(32);
-        $passwordReset = parent::save($data);
 
-        event(new PasswordResetEvent($passwordReset));
+        return $this->model->create($data);
+    }
 
-        return $passwordReset;
+    /**
+     * If user exists against to input email or phone then send token.
+     *
+     */
+    public function sendToken($passwordReset)
+    {
+        $user = null;
+        if ($passwordReset['email']) {
+            $user = app(UserRepository::class)->findBy(['email' => $passwordReset['email']])->first();
+        }elseif ($passwordReset['phone']) {
+            $user = app(UserRepository::class)->findBy(['phone' => $passwordReset['phone']])->first();
+        }
+
+        if ($user) {
+            event(new PasswordResetEvent($passwordReset, $user['fullName']));
+        }else {
+            return response()->json(['status' => 404, 'message' => 'Invalid user against to this mail or phone.'], 404);
+        }
     }
 
     /**

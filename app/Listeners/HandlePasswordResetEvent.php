@@ -3,8 +3,6 @@
 namespace App\Listeners;
 
 use App\Mail\ResetUserPassword;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 
 class HandlePasswordResetEvent
@@ -22,12 +20,14 @@ class HandlePasswordResetEvent
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param object $event
      * @return void
      */
-    public function handle($event)
+    public function handle(object $event)
     {
-        $passwordReset = $event->passwordReset;
-        Mail::to('psarjis@gmail.com')->send(new ResetUserPassword($passwordReset));
+        $this->passwordReset = $event->passwordReset;
+        $this->email         = $this->passwordReset->email;
+        $this->receiverName  = $event->receiverName;
+        Mail::to($this->email)->send(new ResetUserPassword($this->passwordReset, $this->receiverName));
     }
 }

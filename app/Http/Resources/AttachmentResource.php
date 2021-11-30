@@ -15,13 +15,13 @@ class AttachmentResource extends Resource
     public function toArray($request)
     {
         return [
-            'id'           => $this->id,
-            'fileName'     => $this->fileName,
-            'descriptions' => $this->descriptions,
-            'type'         => $this->type,
-            'resourceId'   => $this->resourceId,
-            'fileType'     => $this->fileType,
-            'fileSize'     => $this->fileSize,
+            'id'           => $this['id'],
+            'fileName'     => $this['fileName'],
+            'descriptions' => $this['descriptions'],
+            'type'         => $this['type'],
+            'resourceId'   => $this['resourceId'],
+            'fileType'     => $this['fileType'],
+            'fileSize'     => $this['fileSize'],
             'fileUrl'      => $this->getFileUrl(),
         ];
     }
