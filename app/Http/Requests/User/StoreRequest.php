@@ -21,7 +21,7 @@ class StoreRequest extends Request
             'userName'       => 'required|string|min:3|max:100',
             'email'          => 'required|email|unique:users',
             'password'       => 'required|min:6',
-            'userDomain'     => 'string|max:100',
+            'userDomains'    => 'string|max:100',
             'userType'       => 'required|in:'. User::USER_TYPE_SYSTEM_ADMIN_USER. ',' .User::USER_TYPE_GENERAL_ADMIN_USER. ',' .User::USER_TYPE_GENERAL_USER,
             'userWeight'     => 'string|max:6',
             'address'        => 'string|max:255',

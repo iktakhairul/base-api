@@ -28,7 +28,7 @@ class UserResource extends Resource
             'fullName'        => $this['fullName'],
             'userName'        => $this['userName'],
             'email'           => $this['email'],
-            'userDomain'      => $this['userDomain'],
+            'userDomains'     => $this['userDomain'],
             'userType'        => $this['userType'],
             'userWeight'      => $this['userWeight'],
             'address'         => $this['address'],

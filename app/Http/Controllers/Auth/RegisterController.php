@@ -4,23 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\Models\User;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default, this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     /**
      * Where to redirect users after registration.
      *
@@ -46,13 +34,16 @@ class RegisterController extends Controller
      */
     protected function index(RegisterRequest $request)
     {
-       $user = User::create([
-            'userName'  => $request['userName'],
-            'email'     => $request['email'],
-            'phone'     => $request['phone'],
-            'password'  => bcrypt($request['password']),
+        $userId = DB::table('users')->insertGetId([
+            'userName'   => $request['userName'],
+            'email'      => $request['email'],
+            'phone'      => $request['phone'],
+            'password'   => bcrypt($request['password']),
+            'created_at' => now(),
+            'updated_at' => now()
         ]);
 
-        return new UserResource($user);
+        return response()->json(['status' => 201, 'message' => 'User has been created successfully.'], 201);
+
     }
 }
