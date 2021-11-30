@@ -6,10 +6,8 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Repositories\Contracts\UserRepository;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -43,7 +41,7 @@ class LoginController extends Controller
                 $token = $user->createToken('Laravel Password Grant Client');
                 return response(['access_token' => $token], 200);
             }else {
-                return response(['message' => 'Password mismatch or not an admin user.'], 422);
+                return response(['message' => 'Password mismatch or invalid user.'], 422);
             }
         }else {
             return response(['message' => 'User doesn\'t exist.'], 422);

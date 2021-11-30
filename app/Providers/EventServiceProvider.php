@@ -4,10 +4,11 @@ namespace App\Providers;
 
 use App\Events\PasswordResetEvent;
 use App\Listeners\HandlePasswordResetEvent;
+use App\Events\PasswordResetConfirmationEvent;
+use App\Listeners\HandlePasswordResetConfirmationEvent;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         PasswordResetEvent::class => [
             HandlePasswordResetEvent::class,
+        ],
+        PasswordResetConfirmationEvent::class => [
+            HandlePasswordResetConfirmationEvent::class,
         ],
     ];
 

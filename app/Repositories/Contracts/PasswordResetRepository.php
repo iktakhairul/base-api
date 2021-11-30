@@ -9,9 +9,8 @@ interface PasswordResetRepository extends BaseRepository
     /**
      * reset user's password
      *
-     * @param \ArrayAccess $model
-     * @param array $data
-     * @return bool
+     * @param array $request
+     * @return object
      */
-    public function resetPassword(\ArrayAccess $model, array $data);
+    public function updatePasswordTry(array $request);
 }
