@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('userName', '100')->nullable();
             $table->string('email')->unique();
             $table->string('password')->nullable();
-            $table->string('userDomain')->default('user')->nullable();
+            $table->string('userDomains')->default('user')->nullable();
             $table->string('userType')->default('user')->nullable();
             $table->string('userWeight')->default('9.99')->nullable();
             $table->string('address')->nullable();

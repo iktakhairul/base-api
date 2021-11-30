@@ -26,7 +26,7 @@ class UpdateRequest extends Request
             'fullName'       => 'required|regex:/^[a-zA-Z0-9.,\s]+$/|min:3|max:160',
             'userName'       => 'required|string|min:3|max:100',
             'email'          => 'required|email|unique:users,email,'. $user->id, // Correct unique email validation.
-            'userDomain'     => 'string|max:100',
+            'userDomains'    => 'string|max:100',
             'userType'       => 'required|in:'. User::USER_TYPE_SYSTEM_ADMIN_USER. ',' .User::USER_TYPE_GENERAL_ADMIN_USER. ',' .User::USER_TYPE_GENERAL_USER,
             'userWeight'     => 'string|max:6',
             'address'        => 'string|max:255',

@@ -10,7 +10,6 @@ use App\Repositories\Contracts\UserRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-
 class EloquentPasswordResetRepository extends EloquentBaseRepository implements PasswordResetRepository
 {
     /**
