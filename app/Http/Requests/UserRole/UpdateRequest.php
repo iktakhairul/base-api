@@ -3,8 +3,6 @@
 namespace App\Http\Requests\UserRole;
 
 use App\Http\Requests\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 
 class UpdateRequest extends Request
 {
