@@ -9,8 +9,9 @@ class Role extends Model
 {
     use CommonModelFeatures;
 
-    const ROLE_SYSTEM_ADMIN = 'system_admin';
+    const ROLE_SYSTEM_ADMIN = 'system';
     const ROLE_GENERAL_ADMIN = 'admin';
+    const ROLE_GENERAL_USER = 'user';
 
     /**
      * The attributes that are mass assignable.

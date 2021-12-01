@@ -7,18 +7,10 @@ use Illuminate\Support\Facades\Route;
  * API Routes - System Admin User.
  *
  */
-Route::group(['middleware' => ['auth:sanctum', 'system']], function () {
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('users', 'App\Http\Controllers\UserController');
     Route::apiResource('roles', 'App\Http\Controllers\RoleController');
     Route::apiResource('user-roles', 'App\Http\Controllers\UserRoleController');
-    Route::apiResource('attachments', 'App\Http\Controllers\AttachmentController');
-});
-
-/**
- * API Routes - General User.
- *
- */
-Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('attachments', 'App\Http\Controllers\AttachmentController');
 });
 

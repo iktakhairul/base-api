@@ -87,20 +87,7 @@ class User extends Authenticatable
     }
 
     /**
-     * get full name of a user
-     *
-     */
-    public function getFullNameAttribute()
-    {
-        $fullName = $this->firstName;
-        if (!empty($this->middleName)) {
-            $fullName .= ' ' . $this->middleName;
-        }
-        return $fullName . ' ' . $this->lastName;
-    }
-
-    /**
-     * is a brand user
+     * Is a system admin user?
      *
      * @return bool
      */
@@ -108,6 +95,36 @@ class User extends Authenticatable
     {
         foreach ($this->userRoles as $userRole) {
             if (in_array($userRole->role->type, [Role::ROLE_SYSTEM_ADMIN, Role::ROLE_SYSTEM_ADMIN])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Is a general admin user?
+     *
+     * @return bool
+     */
+    public function isGeneralAdminUser()
+    {
+        foreach ($this->userRoles as $userRole) {
+            if (in_array($userRole->role->type, [Role::ROLE_GENERAL_ADMIN, Role::ROLE_GENERAL_ADMIN])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Is a general user?
+     *
+     * @return bool
+     */
+    public function isGeneralUser()
+    {
+        foreach ($this->userRoles as $userRole) {
+            if (in_array($userRole->role->type, [Role::ROLE_GENERAL_USER, Role::ROLE_GENERAL_USER])) {
                 return true;
             }
         }
