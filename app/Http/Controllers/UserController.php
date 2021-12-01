@@ -36,6 +36,7 @@ class UserController extends Controller
      */
     public function index(IndexRequest $request)
     {
+        $this->authorize('list', User::class);
         $users = $this->userRepository->findBy($request->all());
 
         return new UserResourceCollection($users);
@@ -60,7 +61,7 @@ class UserController extends Controller
      *
      * @param $id
      * @return null
-     * @throws UserResource
+     * @return UserResource
      */
     public function show($id)
     {
@@ -68,6 +69,7 @@ class UserController extends Controller
         if (!$user instanceof User) {
             return response()->json(['status' => 404, 'message' => 'Resource not found with the specific id.'], 404);
         }
+        $this->authorize('show', $user);
 
         return new UserResource($user);
     }
@@ -81,6 +83,7 @@ class UserController extends Controller
      */
     public function update(UpdateRequest $request, User $user)
     {
+        $this->authorize('update', $user);
         $user = $this->userRepository->update($user, $request->all());
 
         return new UserResource($user);
@@ -94,6 +97,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $this->authorize('destroy', $user);
         $this->userRepository->delete($user);
 
         return response()->json(null, 204);

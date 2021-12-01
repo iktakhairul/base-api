@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\RegistrationConfirmationEvent;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Http\Requests\Auth\RegisterRequest;
@@ -35,6 +36,7 @@ class RegisterController extends Controller
     protected function index(RegisterRequest $request)
     {
         $userId = DB::table('users')->insertGetId([
+            'fullName'   => $request['fullName'],
             'userName'   => $request['userName'],
             'email'      => $request['email'],
             'phone'      => $request['phone'],
@@ -42,6 +44,10 @@ class RegisterController extends Controller
             'created_at' => now(),
             'updated_at' => now()
         ]);
+
+        if ($userId) {
+            event(new RegistrationConfirmationEvent($request['email'], $request['fullName']));
+        }
 
         return response()->json(['status' => 201, 'message' => 'User has been created successfully.'], 201);
 
