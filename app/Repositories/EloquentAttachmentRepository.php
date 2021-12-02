@@ -6,6 +6,8 @@ use App\Models\Attachment;
 use App\Helpers\AttachmentHelper;
 use App\Repositories\Contracts\AttachmentRepository;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class EloquentAttachmentRepository extends EloquentBaseRepository implements AttachmentRepository
 {
@@ -16,7 +18,7 @@ class EloquentAttachmentRepository extends EloquentBaseRepository implements Att
      */
     protected $modelName = Attachment::class;
 
-    /*
+    /**
      * @inheritdoc
      */
     public function save(array $data): \ArrayAccess
@@ -27,8 +29,8 @@ class EloquentAttachmentRepository extends EloquentBaseRepository implements Att
             $image = base64_decode(AttachmentHelper::getFileSourceFromInput($data));
         }
         $directoryName = $this->model->getDirectoryName($data['type']);
-        $data['fileName'] = str_random(20) . '_'.$data['resourceId'].'_'.$data['fileName'];
-        \Storage::put($directoryName . '/' . $data['fileName'], $image, 'public');
+        $data['fileName'] = Str::Random(20) . '_'.$data['resourceId'].'_'.$data['fileName'];
+        Storage::put($directoryName . '/' . $data['fileName'], $image, 'public');
         return parent::save($data);
     }
 
@@ -36,24 +38,16 @@ class EloquentAttachmentRepository extends EloquentBaseRepository implements Att
     {
         $image = AttachmentHelper::getFileSourceFromInput($data);
         $directoryName = $this->model->getDirectoryName($data['type']);
-        $data['fileName'] = str_random(20) . '_'.$data['resourceId'].'_'.$data['fileName'];
-        AttachmentHelper::deleteFile($directoryName.'/'.$model->fileName);
-        \Storage::put($directoryName . '/' . $data['fileName'], base64_decode($image), 'public');
+        $data['fileName'] = Str::Random(20) . '_'.$data['resourceId'].'_'.$data['fileName'];
+        AttachmentHelper::deleteFile($directoryName.'/'.$model['fileName']);
+        Storage::put($directoryName . '/' . $data['fileName'], base64_decode($image), 'public');
         return parent::update($model, $data);
-    }
-
-    public function getAttachmentByFactoryCertificateId($factoryCertificateId)
-    {
-        return $this->model->where('resourceId', $factoryCertificateId)
-            ->where('type', Attachment::ATTACHMENT_TYPE_FACTORY_CERTIFICATE)
-            ->orderBy('id', 'desc')
-            ->first();
     }
 
     public function delete(\ArrayAccess $model): bool
     {
         $directoryName = $this->model->getDirectoryName($model->type);
-        AttachmentHelper::deleteFile($directoryName.'/'.$model->fileName);
+        AttachmentHelper::deleteFile($directoryName.'/'.$model['fileName']);
         return parent::delete($model);
     }
 }

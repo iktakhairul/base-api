@@ -10,8 +10,7 @@ class Attachment extends Model
 {
     use CommonModelFeatures;
 
-    const ATTACHMENT_TYPE_PROFILE_PIC = 'profile_pic';
-    const ATTACHMENT_TYPE_FACTORY_CERTIFICATE = 'factory_certificates';
+    const ATTACHMENT_TYPE_PROFILE_PIC = 'profile-pic';
 
     /**
      * The database table used by the model.
@@ -53,7 +52,7 @@ class Attachment extends Model
      */
     public function getDirectoryName($attachmentType)
     {
-        $directoryName = 'misc';
+        $directoryName = 'asset';
         switch ($attachmentType) {
             case self::ATTACHMENT_TYPE_PROFILE_PIC:
                 $directoryName = 'profile-pics';
@@ -61,17 +60,5 @@ class Attachment extends Model
         }
 
         return $directoryName;
-    }
-
-
-    /**
-     * generate file URL by type
-     *
-     * @param string $imageType
-     * @return mixed
-     */
-    public function getFileUrl($imageType = '')
-    {
-        return \Storage::temporaryUrl($this->getDirectoryName($this->type) . '/' . $this->fileName, now()->addMinutes(5));
     }
 }
