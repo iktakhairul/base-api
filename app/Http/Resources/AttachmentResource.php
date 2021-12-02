@@ -22,7 +22,7 @@ class AttachmentResource extends Resource
             'resourceId'   => $this['resourceId'],
             'fileType'     => $this['fileType'],
             'fileSize'     => $this['fileSize'],
-            'fileUrl'      => $this->getFileUrl(),
+//            'fileUrl'      => $this->getFileUrl(),
         ];
     }
 }

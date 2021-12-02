@@ -10,6 +10,7 @@ use App\Http\Resources\AttachmentResourceCollection;
 use App\Repositories\Contracts\AttachmentRepository;
 use App\Models\Attachment;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AttachmentController extends Controller
 {
@@ -47,7 +48,7 @@ class AttachmentController extends Controller
      * @param StoreRequest $request
      * @return AttachmentResource
      */
-    public function store(StoreRequest $request)
+    public function store(Request $request)
     {
         $attachment = $this->attachmentRepository->save($request->all());
 
