@@ -28,9 +28,9 @@ class EloquentAttachmentRepository extends EloquentBaseRepository implements Att
         } else {
             $image = base64_decode(AttachmentHelper::getFileSourceFromInput($data));
         }
-        $directoryName = $this->model->getDirectoryName($data['type']);
         $data['fileName'] = Str::Random(20) . '_'.$data['resourceId'].'_'.$data['fileName'];
-        Storage::put($directoryName . '/' . $data['fileName'], $image, 'public');
+        $filePath = public_path($this->model->getDirectoryName($data['type']));
+        $data['fileSource']->move($filePath, $data['fileName']);
         return parent::save($data);
     }
 

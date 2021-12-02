@@ -2,7 +2,7 @@
 
 namespace App\Http\Traits;
 
-use App\DbModels\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait CommonModelHelperFeatures
