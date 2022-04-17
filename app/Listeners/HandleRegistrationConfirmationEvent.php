@@ -2,8 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Mail\RegistrationConfirmation;
-use Illuminate\Support\Facades\Mail;
+use App\Jobs\SendEmailJob;
 
 class HandleRegistrationConfirmationEvent
 {
@@ -28,6 +27,6 @@ class HandleRegistrationConfirmationEvent
         $this->email        = $event->registerEmail;
         $this->receiverName = $event->receiverName;
 
-        Mail::to($this->email)->send(new RegistrationConfirmation($this->email, $this->receiverName));
+        dispatch(new SendEmailJob($this->email, $this->receiverName));
     }
 }
